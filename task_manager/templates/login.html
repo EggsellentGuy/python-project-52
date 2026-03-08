@@ -3,13 +3,13 @@
 {% load i18n %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Login" %}</h1>
+<h1 class="my-4">{% trans "Вход" %}</h1>
 
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
     <button type="submit" class="btn btn-primary">
-        {% trans "Sign in" %}
+        {% trans "Войти" %}
     </button>
 </form>
 {% endblock %}

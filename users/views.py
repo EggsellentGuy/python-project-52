@@ -1,9 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
-from django.contrib import messages
 
 from users.forms import UserRegisterForm, UserUpdateForm
 
@@ -30,7 +30,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != self.get_object().pk:
             messages.error(
-                request, "You have no permission to change another user.")
+                request, "У вас нет прав для изменения другого пользователя."
+            )
             return redirect("users:index")
         return super().dispatch(request, *args, **kwargs)
 
@@ -43,6 +44,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != self.get_object().pk:
             messages.error(
-                request, "You have no permission to delete another user.")
+                request, "У вас нет прав для удаления другого пользователя."
+            )
             return redirect("users:index")
         return super().dispatch(request, *args, **kwargs)
