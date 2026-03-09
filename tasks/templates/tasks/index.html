@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1 class="my-4">{% trans "Задачи" %}</h1>
+
+<a class="btn btn-primary mb-3" href="{% url 'tasks:create' %}">
+    {% trans "Создать задачу" %}
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>{% trans "Имя" %}</th>
+            <th>{% trans "Статус" %}</th>
+            <th>{% trans "Автор" %}</th>
+            <th>{% trans "Исполнитель" %}</th>
+            <th>{% trans "Дата создания" %}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ task.name }}</td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.author }}</td>
+            <td>{{ task.executor }}</td>
+            <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
+            <td>
+                <a href="{% url 'tasks:detail' task.pk %}">{% trans "Показать" %}</a>
+                <br>
+                <a href="{% url 'tasks:update' task.pk %}">{% trans "Изменить" %}</a>
+                <br>
+                <a href="{% url 'tasks:delete' task.pk %}">{% trans "Удалить" %}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

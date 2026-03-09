@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from labels.models import Label
+from statuses.models import Status
+from tasks.models import Task
 
 
 class UserCRUDTest(TestCase):
@@ -86,3 +89,25 @@ class UserCRUDTest(TestCase):
 
         self.assertRedirects(response, reverse("users:index"))
         self.assertTrue(User.objects.filter(pk=self.other_user.pk).exists())
+
+    def test_user_cannot_delete_if_linked_to_task(self):
+        status = Status.objects.create(name="Новый")
+        label = Label.objects.create(name="Срочно")
+
+        task = Task.objects.create(
+            name="Тестовая задача",
+            description="Описание",
+            status=status,
+            author=self.user,
+            executor=self.other_user,
+        )
+        task.labels.add(label)
+
+        self.client.login(username="testuser", password="strong-password-123")
+
+        response = self.client.post(
+            reverse("users:delete", kwargs={"pk": self.user.pk}),
+        )
+
+        self.assertRedirects(response, reverse("users:index"))
+        self.assertTrue(User.objects.filter(pk=self.user.pk).exists())

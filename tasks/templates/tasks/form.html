@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+<h1 class="my-4">
+    {% if object %}
+    {% trans "Изменение задачи" %}
+    {% else %}
+    {% trans "Создать задачу" %}
+    {% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">
+        {% if object %}
+        {% trans "Изменить" %}
+        {% else %}
+        {% trans "Создать" %}
+        {% endif %}
+    </button>
+</form>
+{% endblock %}

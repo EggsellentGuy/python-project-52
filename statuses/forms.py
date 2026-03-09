@@ -7,3 +7,8 @@ class StatusForm(forms.ModelForm):
     class Meta:
         model = Status
         fields = ("name",)
+        error_messages = {
+            'name': {
+                'unique': "Статус с таким именем уже существует"
+            }
+        }

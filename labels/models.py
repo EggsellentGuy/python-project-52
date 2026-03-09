@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Status(models.Model):
+class Label(models.Model):
     name = models.CharField("Имя", max_length=255, unique=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания")
