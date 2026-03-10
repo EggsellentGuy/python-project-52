@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models.deletion import ProtectedError
@@ -66,8 +67,12 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         try:
-            return super().post(request, *args, **kwargs)
+            self.object.delete()
+            logout(request)
+            messages.success(request, "Пользователь успешно удален")
+            return redirect("users:index")
         except ProtectedError:
             messages.error(
                 request, "Невозможно удалить пользователя, потому что он используется"

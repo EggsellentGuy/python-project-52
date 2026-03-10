@@ -4,9 +4,7 @@
 {% block content %}
 <h1 class="my-4">{% trans "Статусы" %}</h1>
 
-<a class="btn btn-primary mb-3" role="button" href="{% url 'statuses:create' %}">
-    {% trans "Создать статус" %}
-</a>
+<a class="btn btn-primary" href="{% url 'statuses:create' %}">Создать статус</a>
 
 <table class="table table-striped">
     <thead>
