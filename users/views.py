@@ -40,6 +40,17 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             return redirect("users:index")
         return super().dispatch(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        password = form.cleaned_data.get("password1")
+        if password:
+            self.object.set_password(password)
+
+        self.object.save()
+        messages.success(self.request, "Пользователь успешно изменен")
+        return redirect(self.success_url)
+
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = User
