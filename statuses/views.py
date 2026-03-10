@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.shortcuts import redirect
 
 from statuses.forms import StatusForm
 from statuses.models import Status
@@ -41,5 +42,11 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("statuses:index")
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.task_set.exists():
+            messages.error(request, "Невозможно удалить статус")
+            return redirect("statuses:index")
+
         messages.success(self.request, "Статус успешно удален")
         return super().post(request, *args, **kwargs)

@@ -21,6 +21,10 @@ class UserCreateView(CreateView):
     template_name = "users/form.html"
     success_url = reverse_lazy("login")
 
+    def form_valid(self, form):
+        messages.success(self.request, "Пользователь успешно зарегистрирован")
+        return super().form_valid(form)
+
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
