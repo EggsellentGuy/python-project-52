@@ -10,6 +10,9 @@ migrate:
 start:
 	uv run python manage.py runserver 0.0.0.0:8000
 
+start-server:
+	uv run python manage.py runserver 0.0.0.0:3000
+
 build:
 	./build.sh
 
