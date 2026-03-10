@@ -1,3 +1,5 @@
+from django_filters.views import FilterView
+from tasks.filters import TaskFilter
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -8,10 +10,11 @@ from tasks.forms import TaskForm
 from tasks.models import Task
 
 
-class TaskListView(LoginRequiredMixin, ListView):
+class TaskListView(LoginRequiredMixin, FilterView):
     model = Task
     template_name = "tasks/index.html"
     context_object_name = "tasks"
+    filterset_class = TaskFilter
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):

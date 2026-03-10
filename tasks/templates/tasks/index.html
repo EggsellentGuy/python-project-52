@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 <h1 class="my-4">{% trans "Задачи" %}</h1>
@@ -7,6 +8,13 @@
 <a class="btn btn-primary mb-3" href="{% url 'tasks:create' %}">
     {% trans "Создать задачу" %}
 </a>
+
+<form method="get" class="border rounded p-3 mb-3">
+    {% bootstrap_form filter.form %}
+    <button type="submit" class="btn btn-primary">
+        {% trans "Показать" %}
+    </button>
+</form>
 
 <table class="table table-striped">
     <thead>

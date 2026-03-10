@@ -18,7 +18,9 @@ class TaskCRUDTest(TestCase):
             password="other-password-123",
         )
         self.status = Status.objects.create(name="Новый")
+        self.second_status = Status.objects.create(name="В работе")
         self.label = Label.objects.create(name="Срочно")
+        self.second_label = Label.objects.create(name="Баг")
 
         self.task = Task.objects.create(
             name="Подготовить отчет",
@@ -28,6 +30,15 @@ class TaskCRUDTest(TestCase):
             executor=self.other_user,
         )
         self.task.labels.add(self.label)
+
+        self.second_task = Task.objects.create(
+            name="Исправить ошибку",
+            description="Вторая задача",
+            status=self.second_status,
+            author=self.other_user,
+            executor=self.author,
+        )
+        self.second_task.labels.add(self.second_label)
 
     def test_task_list(self):
         self.client.login(username="author", password="strong-password-123")
@@ -144,3 +155,47 @@ class TaskCRUDTest(TestCase):
             response,
             f"{reverse('login')}?next={reverse('tasks:detail', kwargs={'pk': self.task.pk})}",
         )
+
+    def test_task_filter_by_status(self):
+        self.client.login(username="author", password="strong-password-123")
+
+        response = self.client.get(
+            reverse("tasks:index"),
+            {"status": self.status.pk},
+        )
+
+        self.assertContains(response, "Подготовить отчет")
+        self.assertNotContains(response, "Исправить ошибку")
+
+    def test_task_filter_by_executor(self):
+        self.client.login(username="author", password="strong-password-123")
+
+        response = self.client.get(
+            reverse("tasks:index"),
+            {"executor": self.other_user.pk},
+        )
+
+        self.assertContains(response, "Подготовить отчет")
+        self.assertNotContains(response, "Исправить ошибку")
+
+    def test_task_filter_by_label(self):
+        self.client.login(username="author", password="strong-password-123")
+
+        response = self.client.get(
+            reverse("tasks:index"),
+            {"labels": self.label.pk},
+        )
+
+        self.assertContains(response, "Подготовить отчет")
+        self.assertNotContains(response, "Исправить ошибку")
+
+    def test_task_filter_self_tasks(self):
+        self.client.login(username="author", password="strong-password-123")
+
+        response = self.client.get(
+            reverse("tasks:index"),
+            {"self_tasks": "on"},
+        )
+
+        self.assertContains(response, "Подготовить отчет")
+        self.assertNotContains(response, "Исправить ошибку")
