@@ -75,6 +75,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
             return redirect("users:index")
         except ProtectedError:
             messages.error(
-                request, "Невозможно удалить пользователя, потому что он используется"
+                request, 
+                "Невозможно удалить пользователя, потому что он используется"
             )
             return redirect("users:index")

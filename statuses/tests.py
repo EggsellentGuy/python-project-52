@@ -74,7 +74,9 @@ class StatusCRUDTest(TestCase):
             reverse("statuses:update", kwargs={"pk": self.status.pk}))
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('statuses:update', kwargs={'pk': self.status.pk})}",
+            f"{reverse('login')}?next={
+                reverse('statuses:update', kwargs={'pk': self.status.pk})
+                }",
         )
 
     def test_status_delete_requires_login(self):
@@ -82,5 +84,7 @@ class StatusCRUDTest(TestCase):
             reverse("statuses:delete", kwargs={"pk": self.status.pk}))
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('statuses:delete', kwargs={'pk': self.status.pk})}",
+            f"{reverse('login')}?next={
+                reverse('statuses:delete', kwargs={'pk': self.status.pk})
+                }",
         )

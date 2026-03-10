@@ -82,7 +82,9 @@ class LabelCRUDTest(TestCase):
         )
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('labels:update', kwargs={'pk': self.label.pk})}",
+            f"{reverse('login')}?next={
+                reverse('labels:update', kwargs={'pk': self.label.pk})
+                }",
         )
 
     def test_label_delete_requires_login(self):
@@ -91,7 +93,9 @@ class LabelCRUDTest(TestCase):
         )
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('labels:delete', kwargs={'pk': self.label.pk})}",
+            f"{reverse('login')}?next={
+                reverse('labels:delete', kwargs={'pk': self.label.pk})
+                }",
         )
 
     def test_label_cannot_delete_if_linked_to_task(self):

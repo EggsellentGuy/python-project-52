@@ -137,7 +137,9 @@ class TaskCRUDTest(TestCase):
             reverse("tasks:update", kwargs={"pk": self.task.pk}))
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('tasks:update', kwargs={'pk': self.task.pk})}",
+            f"{reverse('login')}?next={
+                reverse('tasks:update', kwargs={'pk': self.task.pk})
+                }",
         )
 
     def test_task_delete_requires_login(self):
@@ -145,7 +147,9 @@ class TaskCRUDTest(TestCase):
             reverse("tasks:delete", kwargs={"pk": self.task.pk}))
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('tasks:delete', kwargs={'pk': self.task.pk})}",
+            f"{reverse('login')}?next={
+                reverse('tasks:delete', kwargs={'pk': self.task.pk})
+                }",
         )
 
     def test_task_detail_requires_login(self):
@@ -153,7 +157,9 @@ class TaskCRUDTest(TestCase):
             reverse("tasks:detail", kwargs={"pk": self.task.pk}))
         self.assertRedirects(
             response,
-            f"{reverse('login')}?next={reverse('tasks:detail', kwargs={'pk': self.task.pk})}",
+            f"{reverse('login')}?next={
+                reverse('tasks:detail', kwargs={'pk': self.task.pk})
+                }",
         )
 
     def test_task_filter_by_status(self):
