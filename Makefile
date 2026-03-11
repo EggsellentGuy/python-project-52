@@ -23,4 +23,4 @@ test:
 	uv run pytest
 
 test-coverage:
-	uv run pytest task_manager --cov=task_manager --cov-report=xml:coverage.xml
+	uv run pytest --ds=task_manager.settings --cov=labels --cov=statuses --cov=tasks --cov=users --cov-report=xml:coverage.xml
