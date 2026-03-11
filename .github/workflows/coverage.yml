@@ -1,33 +1,50 @@
-name: CI
+name: Python CI with Coverage
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+env:
+  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
 jobs:
-  test-and-analyze:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-django pytest-cov
+          pip install uv
+          make install
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=. --cov-report=xml:coverage.xml
-          ls -l coverage.xml   # Проверка, что файл coverage.xml есть
+          uv run pytest \
+            labels/tests.py \
+            statuses/tests.py \
+            tasks/tests.py \
+            users/tests.py \
+            --ds=task_manager.settings \
+            --cov=labels \
+            --cov=statuses \
+            --cov=tasks \
+            --cov=users \
+            --cov-report=xml:coverage.xml
+          ls -l coverage.xml  # убедимся, что coverage.xml есть
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v6
@@ -37,4 +54,5 @@ jobs:
             sonar.organization=eggsellentguy
             sonar.projectKey=EggsellentGuy_python-project-52
             sonar.python.coverage.reportPaths=coverage.xml
-            sonar.login=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
