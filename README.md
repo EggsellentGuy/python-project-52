@@ -40,7 +40,7 @@ https://python-project-52-gbwr.onrender.com/
 
 ## Технологии
 
-* Python 3.14
+* Python 3.12
 * Django
 * django-filter
 * Bootstrap 5
