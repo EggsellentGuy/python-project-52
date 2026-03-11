@@ -24,6 +24,9 @@ packages = ["task_manager"]
 
 [dependency-groups]
 dev = [
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
     "ruff>=0.15.5",
 ]
 

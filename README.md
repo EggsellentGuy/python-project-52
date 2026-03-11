@@ -2,6 +2,7 @@
 [![Actions Status](https://github.com/EggsellentGuy/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EggsellentGuy/python-project-52/actions)
 
 
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg)](https://sonarcloud.io/summary/new_code?id=EggsellentGuy_python-project-52)
 # Task Manager
 
 Task Manager — это веб-приложение для управления задачами.
