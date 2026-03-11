@@ -44,15 +44,14 @@ jobs:
             --cov=tasks \
             --cov=users \
             --cov-report=xml:coverage.xml
-          ls -l coverage.xml  # убедимся, что coverage.xml есть
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v6
-        with:
-          projectBaseDir: .
-          extraProperties: |
-            sonar.organization=eggsellentguy
-            sonar.projectKey=EggsellentGuy_python-project-52
-            sonar.python.coverage.reportPaths=coverage.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=eggsellentguy
+            -Dsonar.projectKey=EggsellentGuy_python-project-52
+            -Dsonar.python.coverage.reportPaths=coverage.xml
